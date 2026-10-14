@@ -76,12 +76,7 @@ venv\Scripts\activate
 source venv/bin/activate
 
 pip install -r requirements.txt
-pip install langchain langchain-core langchain-community langgraph \
-            langchain-ollama langchain-google-vertexai google-cloud-aiplatform \
-            tavily-python youtube_search
 ```
-
-> `requirements.txt` currently lists only the Streamlit packages and the SQLite checkpointer. The second `pip install` line adds the LangChain, model, and search packages the pages import.
 
 ### Configuration
 
@@ -89,10 +84,12 @@ pip install langchain langchain-core langchain-community langgraph \
   ```python
   vertexai.init(project="<your-gcp-project>", location="us-central1")
   ```
-- **Tavily (Path Planner):** put your own key in `Path_planner.py`. Better yet, load it from an environment variable instead of hard-coding it:
-  ```python
-  import os
-  api_key = os.environ["TAVILY_API_KEY"]
+- **Tavily (Path Planner):** set your key as an environment variable before starting the app:
+  ```bash
+  # Windows (PowerShell)
+  $env:TAVILY_API_KEY = "tvly-..."
+  # macOS / Linux
+  export TAVILY_API_KEY="tvly-..."
   ```
 - **Switching models:** `chatbot.py` and `Path_planner.py` contain commented-out Vertex AI code. Swap it in for `ChatOllama` if you'd rather use Gemini than a local model.
 
@@ -117,8 +114,8 @@ Saraswati-AI/
 ├── Path_planner.py     # Path Planner: Tavily + YouTube search, then an LLM-written roadmap
 ├── Quiz.py             # Quiz page (placeholder)
 ├── Interview.py        # Interview page (placeholder)
-├── History.sqlite      # Chat history saved by the chatbot's LangGraph checkpointer
-└── requirements.txt    # Python dependencies
+├── requirements.txt    # Python dependencies
+└── History.sqlite      # Created at runtime: chatbot history (git-ignored)
 ```
 
 ---
@@ -129,8 +126,7 @@ Saraswati-AI/
 - [ ] Mock interview practice with feedback (`Interview.py`)
 - [ ] PDF upload and question answering in Chatbot Guru
 - [ ] Working "Create User" flow in the chatbot
-- [ ] Move API keys and project IDs into environment variables / `.env`
-- [ ] Complete, pinned `requirements.txt`
+- [ ] Make the Vertex AI project ID configurable via an environment variable
 
 ---
 

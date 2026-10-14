@@ -1,0 +1,12 @@
+# Local chat history (LangGraph SQLite checkpointer)
+History.sqlite
+*.sqlite-journal
+
+# Environment / secrets
+.env
+
+# Python
+__pycache__/
+*.pyc
+venv/
+.venv/

@@ -2,6 +2,7 @@ from langchain_google_vertexai import VertexAI
 from langchain_ollama import ChatOllama
 import vertexai
 # from langchain_google_vertexai import ChatVertexAI
+import os
 import streamlit as st
 
 st.title("Path Planner")
@@ -14,7 +15,7 @@ import streamlit as st
 
 from langchain_core.messages import HumanMessage
 from langchain_community.tools.tavily_search import TavilySearchResults
-from langchain.utilities.tavily_search import TavilySearchAPIWrapper
+from langchain_community.utilities.tavily_search import TavilySearchAPIWrapper
 from langchain_community.tools import YouTubeSearchTool
 from langchain_core.prompts import PromptTemplate
 from youtube_search import YoutubeSearch
@@ -37,7 +38,10 @@ def format_headers(text):
             formatted_text += f"{line}\n"
     return formatted_text
 
-api_key = "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"
+api_key = os.getenv("TAVILY_API_KEY")
+if not api_key:
+    st.error("TAVILY_API_KEY environment variable is not set.")
+    st.stop()
 search = TavilySearchAPIWrapper(tavily_api_key=api_key)
 
 if 'answer1' not in st.session_state:
@@ -94,7 +98,7 @@ def fr(topic12):
         
         provided_text =  invoke_api1(st.session_state['user1'][-1])
         
-        formatted_text = format_headers(provided_text)
+        formatted_text = format_headers(provided_text.content)
         
         
         st.session_state['answer1'].append(formatted_text)
